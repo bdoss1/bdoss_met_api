@@ -27,7 +27,11 @@ export default function ObjectDetailPage({ params }: { params: Promise<{ id: str
 
     <div className="grid gap-6 md:grid-cols-2 md:gap-12">
     {object.primaryImageSmall && (
-       <Image src={object.primaryImageSmall} alt={object.title} className="my-4" />
+       <Image src={object.primaryImageSmall} 
+          alt={object.title} 
+          className="my-4" 
+          width={500}
+          height={500}/>
       )}
      
         <div className="space-y-6">

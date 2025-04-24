@@ -108,8 +108,10 @@ export default function HomePage() {
         <Link href={`/object/${obj.objectID}`} key={obj.objectID}>
           <div className="border p-2 rounded hover:shadow cursor-pointer">
             <Image
-              src={obj.primaryImageSmall || '/placeholder.jpg'}
+              src={obj.primaryImageSmall}
               alt={obj.title}
+              width={300}
+              height={300}
               className="w-full h-48 object-cover"
             />
           <p className="mt-2 font-semibold text-sm">{obj.title}</p>
