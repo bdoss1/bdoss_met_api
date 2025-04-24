@@ -6,6 +6,8 @@ import { use } from 'react';
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link'
 import { Button } from '@/components/ui/button';
+import Image from 'next/image'
+
 
 export default function ObjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params); // ✅ unwrap Promise
@@ -25,8 +27,9 @@ export default function ObjectDetailPage({ params }: { params: Promise<{ id: str
 
     <div className="grid gap-6 md:grid-cols-2 md:gap-12">
     {object.primaryImageSmall && (
-        <img src={object.primaryImageSmall} alt={object.title} className="my-4" />
+       <Image src={object.primaryImageSmall} alt={object.title} className="my-4" />
       )}
+     
         <div className="space-y-6">
             <p><strong>Artist:</strong> {object.artistDisplayName}</p>
             <p><strong>Date:</strong> {object.objectDate}</p>
