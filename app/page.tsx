@@ -3,11 +3,22 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { getDepartments, searchObjects, getObjectDetails } from '@/lib/api';
+import Image from 'next/image';
+
+export type MetObject = {
+  objectID: number;
+  title: string;
+  primaryImageSmall: string;
+  artistDisplayName?: string;
+  objectDate?: string;
+  medium?: string;
+  department?: string;
+};
 
 export default function HomePage() {
-  const [objects, setObjects] = useState<any[]>([]);
+  const [objects, setObjects] = useState<MetObject[]>([]);
   const [objectIDs, setObjectIDs] = useState<number[]>([]);
-  const [departments, setDepartments] = useState<any[]>([]);
+  const [departments, setDepartments] = useState<{ departmentId: number; displayName: string }[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedDept, setSelectedDept] = useState<number>();
   const [query, setQuery] = useState('');
@@ -93,18 +104,18 @@ export default function HomePage() {
 
       {/* Object Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        {objects.map((obj) => (
-         <Link href={`/object/${obj.objectID}`}>
-         <div className="border p-2 rounded hover:shadow cursor-pointer">
-           <img
-             src={obj.primaryImageSmall}
-             alt={obj.title}
-             className="w-full h-48 object-cover"
-           />
-           <p className="mt-2 font-semibold text-sm">{obj.title}</p>
-         </div>
-       </Link>
-        ))}
+      {objects.map((obj) => (
+        <Link href={`/object/${obj.objectID}`} key={obj.objectID}>
+          <div className="border p-2 rounded hover:shadow cursor-pointer">
+            <Image
+              src={obj.primaryImageSmall || '/placeholder.jpg'}
+              alt={obj.title}
+              className="w-full h-48 object-cover"
+            />
+          <p className="mt-2 font-semibold text-sm">{obj.title}</p>
+          </div>
+        </Link>
+      ))}
       </div>
 
       {/* Pagination */}

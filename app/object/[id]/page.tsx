@@ -15,7 +15,7 @@ export default function ObjectDetailPage({ params }: { params: Promise<{ id: str
 
   if (isNaN(objectId)) notFound();
 
-  const object = use(getObjectDetails(objectId)); // 🧠 This uses React 18 streaming
+  const object = use(getObjectDetails(objectId)); 
 
   return (
    

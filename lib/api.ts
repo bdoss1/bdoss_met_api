@@ -1,6 +1,6 @@
 import axios from 'axios';
-const BASE_URL = 'https://collectionapi.metmuseum.org/public/collection/v1'; 
-/* Returned an error when using BASE_URL. Will troublshoot later -BD */
+/*const BASE_URL = 'https://collectionapi.metmuseum.org/public/collection/v1'; 
+ Returned an error when using BASE_URL. Will troublshoot later -BD */
 
 export const getDepartments = async () => {
   try {
