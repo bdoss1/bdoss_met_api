@@ -106,13 +106,13 @@ export default function HomePage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
       {objects.map((obj) => (
         <Link href={`/object/${obj.objectID}`} key={obj.objectID}>
-          <div className="border p-2 rounded hover:shadow cursor-pointer">
+           <div className="rounded-lg border bg-white p-3 shadow-md hover:shadow-xl transition-all duration-200">
             <Image
               src={obj.primaryImageSmall}
               alt={obj.title}
               width={300}
               height={300}
-              className="w-full h-48 object-cover"
+              className="rounded-md w-full h-48 object-cover"
             />
           <p className="mt-2 font-semibold text-sm">{obj.title}</p>
           </div>
