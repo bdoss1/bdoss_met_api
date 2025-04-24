@@ -1,103 +1,128 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { getDepartments, searchObjects, getObjectDetails } from '@/lib/api';
+
+export default function HomePage() {
+  const [objects, setObjects] = useState<any[]>([]);
+  const [objectIDs, setObjectIDs] = useState<number[]>([]);
+  const [departments, setDepartments] = useState<any[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedDept, setSelectedDept] = useState<number>();
+  const [query, setQuery] = useState('');
+  const [idSearch, setIdSearch] = useState('');
+
+  const itemsPerPage = 12;
+
+  // Fetch all departments
+  useEffect(() => {
+    getDepartments().then(setDepartments);
+  }, []);
+
+  // Fetch object IDs when query/department changes
+  useEffect(() => {
+    if (query) {
+      searchObjects(query, selectedDept).then((ids) => {
+        setObjectIDs(ids || []);
+        setCurrentPage(1);
+      });
+    }
+  }, [query, selectedDept]);
+
+  // Fetch object details for current page
+  useEffect(() => {
+    const fetchPageObjects = async () => {
+      const pageIDs = objectIDs.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+      const objectData = await Promise.all(pageIDs.map((id) => getObjectDetails(id)));
+      setObjects(objectData);
+    };
+
+    if (objectIDs.length > 0) {
+      fetchPageObjects();
+    } else {
+      setObjects([]);
+    }
+  }, [objectIDs, currentPage]);
+
+  const handleIdSearch = () => {
+    const trimmed = idSearch.trim();
+    if (!trimmed) return;
+    window.location.href = `/object/${trimmed}`;
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main className="p-4 max-w-6xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6 text-center">Metropolitan Museum Art Gallery</h1>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      {/* Filters */}
+      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <input
+          placeholder="Search by title"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="border p-2 rounded w-full"
+        />
+        <select
+          className="p-2 border rounded"
+          onChange={(e) => setSelectedDept(Number(e.target.value))}
+          defaultValue=""
+        >
+          <option value="">All Departments</option>
+          {departments.map((dept) => (
+            <option key={dept.departmentId} value={dept.departmentId}>
+              {dept.displayName}
+            </option>
+          ))}
+        </select>
+        <div className="flex gap-2">
+          <input
+            placeholder="Search by Object ID"
+            value={idSearch}
+            onChange={(e) => setIdSearch(e.target.value)}
+            className="border p-2 rounded"
+          />
+          <button
+            onClick={handleIdSearch}
+            className="bg-black text-white px-4 py-2 rounded"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            Go
+          </button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+
+      {/* Object Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {objects.map((obj) => (
+         <Link href={`/object/${obj.objectID}`}>
+         <div className="border p-2 rounded hover:shadow cursor-pointer">
+           <img
+             src={obj.primaryImageSmall}
+             alt={obj.title}
+             className="w-full h-48 object-cover"
+           />
+           <p className="mt-2 font-semibold text-sm">{obj.title}</p>
+         </div>
+       </Link>
+        ))}
+      </div>
+
+      {/* Pagination */}
+      {objectIDs.length > itemsPerPage && (
+        <div className="flex justify-center gap-2 mt-8">
+          {Array.from({ length: Math.ceil(objectIDs.length / itemsPerPage) }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentPage(i + 1)}
+              className={`px-3 py-1 border rounded ${
+                currentPage === i + 1 ? 'bg-black text-white' : 'bg-white'
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
+      )}
+    </main>
   );
 }

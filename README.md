@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+#  Met Museum Art Gallery
 
-## Getting Started
+An elegant, mobile-friendly web application built with **Next.js 15 App Router**, **Tailwind CSS**, and the **Metropolitan Museum of Art API**. Explore the world of art with powerful features like:
 
-First, run the development server:
+- Paginated object listings
+- Search by title and object ID
+- Filter by department
+- Deep linking to detail pages
+- Mobile responsive design
+- Built using React Server Components and App Router (Next 15)
+
+---
+
+## Tech Stack
+
+- [Next.js 15 (App Router)](https://nextjs.org/docs/app)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Met Museum Open Access API](https://metmuseum.github.io/)
+- React Server Components + React 19 streaming
+- TypeScript
+- App Router Directory Structure
+
+---
+
+##  Installation Instructions
+
+1. **Unzip Files**
+
+```bash
+cd baron_doss_met_api
+```
+
+2. **Install dependencies**
+
+```bash
+npm install
+```
+
+> Dependencies include:
+> - `next@15`
+> - `react@18`
+> - `tailwindcss`
+> - `axios`
+> - `typescript`, `postcss`, `autoprefixer`
+
+3. **Run the development server**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open your browser to:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+##  Features
 
-To learn more about Next.js, take a look at the following resources:
+- **Search** for artworks by title
+- **Filter** by department (e.g. Egyptian Art, Modern Art)
+- **Search by Object ID** and jump directly to the piece
+- **Paginated** grid layout of artwork cards
+- **Detail pages** show artist, medium, date, and image
+- Fully **responsive design**
+- Uses `next/navigation` and `react.use()` to unwrap params
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📦 Dependencies
 
-## Deploy on Vercel
+```json
+"dependencies": {
+  "axios": "^1.6.2",
+  "next": "15.0.0",
+  "react": "18.2.0",
+  "react-dom": "18.2.0",
+  "tailwindcss": "^3.4.0"
+},
+"devDependencies": {
+  "autoprefixer": "^10.4.14",
+  "postcss": "^8.4.21",
+  "typescript": "^5.2.2"
+}
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🧠 Advanced Notes
+
+- Uses **React Server Components** and `use(params)` to unwrap route params for future compatibility
+- TailwindCSS handles all styling — no extra UI libraries needed
+- Dynamic routing via `app/object/[id]/page.tsx`
+- SEO metadata can be added via `generateMetadata()` in App Router
+- Hard stop at the 2 hour and 15 minute mark code is working as expected. Installed Shadcn but didn't complete additional styling. 
+
+---
+
+## 🧑‍💻 Author
+
+Built by [Baron Doss](https://barondoss.com)
+
+---
+
+## 📄 License
+
+MIT — do what you want, but give credit where credit's due 
